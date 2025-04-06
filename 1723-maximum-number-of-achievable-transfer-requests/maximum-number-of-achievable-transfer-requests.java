@@ -2,14 +2,14 @@ class Solution {
 
     int maxRequest = Integer.MIN_VALUE;
 
-    void helper(int[][] requests , int[] request , int idx , int n , int count) {
+    void helper(int[][] requests , int[] net , int idx , int n , int count) {
 
         // base case 
         if(idx == requests.length) {
 
             boolean allZeros = true;
-            for(int i = 0 ; i<request.length ; i++) {
-                if(request[i]!=0) {
+            for(int i = 0 ; i<net.length ; i++) {
+                if(net[i]!=0) {
                     allZeros = false;
                     break;
                 }
@@ -25,26 +25,26 @@ class Solution {
         int to = requests[idx][1];
 
 
-        request[from]--;
-        request[to]++;
+        net[from]--;
+        net[to]++;
 
-        helper(requests , request , idx+1 , n , count+1);
+        helper(requests , net , idx+1 , n , count+1);
 
         //backtrack
 
-        request[from]++;
-        request[to]--;
+        net[from]++;
+        net[to]--;
 
-        helper(requests , request , idx+1 , n , count);
+        helper(requests , net , idx+1 , n , count);
 
     }
 
 
     public int maximumRequests(int n, int[][] requests) {
-        int[] request = new int[n];
+        int[] net = new int[n];
         int count = 0;
 
-        helper(requests , request , 0 , n , 0);
+        helper(requests , net , 0 , n , 0);
 
         return maxRequest;
     }
