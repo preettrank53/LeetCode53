@@ -25,6 +25,10 @@ class Solution {
 
             //backtrack
             child[i] = child[i] - cookies[idx];
+
+            if(child[i]==0) {
+                break;
+            }
         }
     }
 
