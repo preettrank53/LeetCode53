@@ -24,10 +24,10 @@ class Solution {
             list.add(root.val);
         }
 
-        else {
+        
             helper(root.left , list);
             helper(root.right , list);
-        }
+        
     }
 
     public boolean leafSimilar(TreeNode root1, TreeNode root2) {
