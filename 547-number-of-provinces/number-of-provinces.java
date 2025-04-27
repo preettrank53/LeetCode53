@@ -1,26 +1,36 @@
 class Solution {
 
-    void DFS(Map<Integer , List<Integer>> adj , Set<Integer> visited , int u) {
+    void BFS(Map<Integer , List<Integer>> adj , Set<Integer> visited , int u) {
         if(visited.contains(u)) {
             return;
         }
+
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(u);
         visited.add(u);
 
-        List<Integer> list = adj.getOrDefault(u, new ArrayList<>());
-        for(int i = 0 ; i<list.size() ; i++) {
-            int v = list.get(i);
-            if(!visited.contains(v)) {
-                DFS(adj , visited , v);
+        while(!queue.isEmpty()) {
+            int node = queue.poll();
+
+            List<Integer> near = adj.getOrDefault(node , new ArrayList<>());
+
+            for(int i = 0 ; i<near.size() ; i++) {
+                int v = near.get(i);
+                if(!visited.contains(v)) {
+                    visited.add(v);
+                    queue.add(v);
+                }
             }
         }
+
     }
 
-    int useDFS(Map<Integer , List<Integer>> adj , int V) {
+    int useBFS(Map<Integer , List<Integer>> adj , int V) {
         Set<Integer> visited = new HashSet<>();
         int count = 0;
         for(int i = 0 ; i < V ; i++) {
             if(!visited.contains(i)) {
-                DFS(adj , visited , i);
+                BFS(adj , visited , i);
                 count++;
             }
         }
@@ -46,6 +56,6 @@ class Solution {
             }
         }
 
-        return useDFS(map , edges.length);
+        return useBFS(map , edges.length);
     }
 }
