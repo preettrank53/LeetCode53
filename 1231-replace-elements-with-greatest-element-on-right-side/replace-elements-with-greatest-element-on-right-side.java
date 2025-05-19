@@ -1,23 +1,20 @@
 class Solution {
-    
-    int max(int[] arr , int i) {
-        int max = arr[i];
-
-        for(int j = i + 1 ; j<arr.length ; j++ ) {
-            if(max < arr[j]) {
-                max = arr[j];
+    public int[] replaceElements(int[] arr) {
+        int n = arr.length;
+        int[] ans = new int[n];
+        int max = -1 ;
+        //arr[n-1] = -1;
+        for(int i = n-2 ; i >= 0 ; i--) {
+            if(max < arr[i+1]) {
+                max = arr[i+1];
+                ans[i] = max;
+            } else {
+                ans[i] = max;
             }
         }
 
-        return max;
-    }
-    public int[] replaceElements(int[] arr) {
+        ans[n-1] =-1;
 
-        for(int i = 0 ; i<arr.length-1 ; i++) {
-            arr[i] = max(arr , i+1);
-        }
-
-        arr[arr.length-1] = -1;
-        return arr;
+        return ans;
     }
 }
