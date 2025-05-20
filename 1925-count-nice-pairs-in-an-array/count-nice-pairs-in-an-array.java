@@ -13,7 +13,7 @@ class Solution {
 
     public int countNicePairs(int[] nums) {
         int[] revArr = new int[nums.length];
-        int mod = 1_000_000_007;
+        int mod = 1_000_00_0007;
         for(int i = 0 ; i < nums.length ; i++) {
             revArr[i] = rev(nums[i]);
         }
