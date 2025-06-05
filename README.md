@@ -65,7 +65,3 @@ Feel free to reach out or connect:
 📫 [Email](preetrank53@gmail.com)
 
 ---
-
-## 📄 License
-
-This project is open-source and available under the [MIT License](LICENSE).
