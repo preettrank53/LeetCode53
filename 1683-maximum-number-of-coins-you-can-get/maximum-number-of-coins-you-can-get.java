@@ -1,18 +1,18 @@
 class Solution {
     public int maxCoins(int[] piles) {
+        // this is 2nd approache
 
         Arrays.sort(piles);
-        
         int n = piles.length;
 
-        int A = n-1 , B = 0 , Y = n-2 ;
-        int result = 0 ; 
+        int m = n/3;
+        int result = 0;
 
-        while(Y > B) {
-            result = result + piles[Y];
-            B++;
-            Y = Y - 2;
+        for(int i = m ; i<n ; i+=2) {
+            result = result + piles[i];
         }
+
         return result;
+
     }
 }
