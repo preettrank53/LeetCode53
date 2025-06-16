@@ -1,19 +1,28 @@
 class Solution {
     public char kthCharacter(int k) {
-        String s = "a";
-
-        while(s.length() < k) {
-            StringBuilder builder = new StringBuilder();
-            for(char ch : s.toCharArray()) {
-                if(ch=='z') {
-                    builder.append('a');
-                }
-                else {
-                    builder.append((char)(ch+1));
-                }
-            }
-            s = s + builder.toString();
+        if(k==1) {
+            return 'a';
         }
-        return s.charAt(k-1);
+
+        int len = 1;
+        while(len < k) {
+            len = len * 2 ;
+        }
+
+        int mid = len / 2;
+        if(k<=mid) {
+            return kthCharacter(k);
+        }
+
+        else {
+            char ch = kthCharacter(k-len/2);
+            if(ch=='z') {
+                return 'a';
+            }
+
+            return (char)(ch+1);
+        }
+
+
     }
 }
