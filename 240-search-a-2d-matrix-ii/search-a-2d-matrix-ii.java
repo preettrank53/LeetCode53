@@ -1,33 +1,23 @@
 class Solution {
-
-    boolean helper(int l , int r , int target , int[] matrix) {
-        while(l<=r) {
-            int mid = l + (r-l)/2;
-
-            if(target==matrix[mid]) {
-                return true;
-            }
-            else if (target < matrix[mid]) {
-                r = mid - 1;
-            }
-            else {
-                l = mid + 1;
-            }
-        }
-        return false;
-    }
-
     public boolean searchMatrix(int[][] matrix, int target) {
-        int n = matrix.length;
-        int m = matrix[0].length;
+        int m = matrix.length;       // number of rows
+        int n = matrix[0].length;    // number of columns
 
-        for(int i = 0 ; i<n ; i++) {
-            if(helper(0 , m-1 , target , matrix[i] )) {
+        int row = 0;         // Start from top-right corner
+        int col = n - 1;
+
+        while (row < m && col >= 0) {
+            int current = matrix[row][col];
+
+            if (current == target) {
                 return true;
+            } else if (current > target) {
+                col--;  // move left
+            } else {
+                row++;  // move down
             }
         }
 
-        return false;
-
+        return false;  // target not found
     }
 }
