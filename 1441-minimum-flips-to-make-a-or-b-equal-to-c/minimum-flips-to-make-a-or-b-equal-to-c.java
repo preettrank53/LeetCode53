@@ -1,28 +1,27 @@
 class Solution {
     public int minFlips(int a, int b, int c) {
-        int count = 0 ;
+        int result = ((a|b) ^ c);
 
-        while(a!=0 || b!=0 || c!=0) {
-            if((c & 1) == 1) {
-                if((a & 1)==0 && (b & 1)==0) {
-                    count++;
-                }
+        int result1 = (a & b);
+
+        int result2 = (result1 & result);
+
+        int count = 0;
+
+        while(result != 0 ) {
+            if((result & 1) == 1 ) {
+                count++;
             }
-            else {
-                if((a & 1) == 1) {
-                    count++;
-                }
-                if((b & 1) == 1) {
-                    count++;
-                }
-
-            }
-
-            a >>= 1;
-            b >>= 1;
-            c >>= 1;
+            result >>= 1;
         }
-        
+
+        while(result2 != 0 ) {
+            if((result2 & 1) == 1 ) {
+                count++;
+            }
+            result2 >>= 1;
+        }
+
         return count;
     }
 }
