@@ -6,7 +6,7 @@ class Solution {
 
         // If it's a leaf node, check if the current value completes the sum
         if (root.left == null && root.right == null) {
-            return root.val == targetSum;
+            return root.val == targetSum;     // why root.val==targetSum because last node is 
         }
 
         // Recur on left and right children with updated sum
