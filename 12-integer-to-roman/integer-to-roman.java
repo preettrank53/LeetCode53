@@ -1,24 +1,24 @@
 class Solution {
     public String intToRoman(int num) {
-       int[] arr = new int[]{1000 , 900 , 500 , 400 , 100 , 90 , 50 , 40 , 10 , 9, 5, 4, 1} ;
-       String[] str = new String[]{"M" , "CM" ,"D" , "CD" , "C" , "XC" , "L" , "XL" , "X" ,"IX" ,"V" ,"IV" , "I"};
+        int[] arr = {1000 , 900 , 500 , 400 , 100 , 90 , 50 , 40 , 10 , 9, 5, 4, 1};
+        String[] str = {"M" , "CM" ,"D" , "CD" , "C" , "XC" , "L" , "XL" , "X" ,"IX" ,"V" ,"IV" , "I"};
 
-       String result = "";
+        StringBuilder result = new StringBuilder();
 
-       for(int i = 0 ; i<13 ; i++) {
-            if(num == 0) {
+        for (int i = 0; i < arr.length; i++) {
+            if (num == 0) {
                 break;
             }
 
-            int times = num/arr[i];
+            int times = num / arr[i]; 
 
-            for(int j = 0 ; j<times ; j++) {
-                result = result + str[i];
+            for (int j = 0; j < times; j++) {
+                result.append(str[i]); 
             }
 
-            num = num % arr[i];
-       }
+            num = num % arr[i]; 
+        }
 
-       return result;
+        return result.toString();
     }
 }
