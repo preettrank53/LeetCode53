@@ -26,7 +26,7 @@ class Solution {
 
         long result = maxSum;
         if (k > 2 && total > 0) {
-            result = (result + (k - 2) * total) % MOD;
+            result = (result + (k - 2) * total);
         }
 
         return (int)(result % MOD);
