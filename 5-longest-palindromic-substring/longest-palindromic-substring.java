@@ -9,7 +9,7 @@ class Solution {
 
         String result = s.substring(0,1);  // Initialize with first character
 
-        for(int i = 0 ; i < n ; i++) {
+        for(int i = 1 ; i < n ; i++) {
             int l = i;
             int r = i;
 
