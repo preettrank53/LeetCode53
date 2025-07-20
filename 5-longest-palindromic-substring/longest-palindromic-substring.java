@@ -22,8 +22,8 @@ class Solution {
                 r++;
             }
 
-            l = i;
-            r = i + 1;
+            l = i-1;
+            r = i;
 
             while(l >= 0 && r < n && s.charAt(l) == s.charAt(r)) {
                 String palindrom = s.substring(l, r + 1);
