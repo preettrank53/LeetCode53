@@ -1,28 +1,27 @@
 class Solution {
     public boolean repeatedSubstringPattern(String s) {
         int n = s.length();
-        if (n <= 1) {
-            return false;
-        }
+        int[] lps = new int[n];
 
-        for (int len = 1; len <= n / 2; len++) {
-            if (n % len != 0) continue;
-
-            String str = s.substring(0, len);
-            int i = 0;
-            while (i + len <= n) {
-                String temp = s.substring(i, i + len);
-                if (!temp.equals(str)) {
-                    break;
+        int len = 0, i = 1;
+        while (i < n) {
+            if (s.charAt(i) == s.charAt(len)) {
+                len++;
+                lps[i] = len;
+                i++;
+            } else {
+                if (len != 0) {
+                    len = lps[len - 1];
+                } else {
+                    lps[i] = 0;
+                    i++;
                 }
-                i += len;
-            }
-
-            if (i == n) {
-                return true;
             }
         }
 
-        return false;
+        int longestPrefixSuffix = lps[n - 1];
+        int patternLength = n - longestPrefixSuffix;
+
+        return longestPrefixSuffix > 0 && n % patternLength == 0;
     }
 }
