@@ -1,22 +1,19 @@
 public class Solution {
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        ListNode pointerA = headA;
-        ListNode pointerB = headB;
+        Set<ListNode> seen = new HashSet<>();
 
-        while (pointerA != pointerB) {
-            if (pointerA == null) {
-                pointerA = headB;
-            } else {
-                pointerA = pointerA.next;
-            }
-
-            if (pointerB == null) {
-                pointerB = headA;
-            } else {
-                pointerB = pointerB.next;
-            }
+        while (headA != null) {
+            seen.add(headA);
+            headA = headA.next;
         }
 
-        return pointerA;
+        while (headB != null) {
+            if (seen.contains(headB)) {
+                return headB; 
+            }
+            headB = headB.next;
+        }
+
+        return null; 
     }
 }
