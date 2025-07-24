@@ -1,25 +1,24 @@
 class Solution {
     public ListNode deleteDuplicates(ListNode head) {
-        if (head == null) return null;
+        if (head == null || head.next == null) return head;
+        ListNode pre = head;
 
-        List<Integer> list = new LinkedList<>();
-        ListNode curr = head;
+        ListNode curr = pre.next;
 
         while (curr != null) {
-            if (!list.contains(curr.val)) {
-                list.add(curr.val);
+            if (pre.val == curr.val) {
+                ListNode currTemp = curr;
+                curr = curr.next;
+                currTemp.next = null;
+
+            } else {
+                pre.next = curr;
+                pre = curr;
+                curr = curr.next;
             }
-            curr = curr.next;
         }
+        pre.next = null;
 
-        ListNode dummy = new ListNode(0);
-        ListNode newCurr = dummy;
-
-        for (int val : list) {
-            newCurr.next = new ListNode(val);
-            newCurr = newCurr.next;
-        }
-
-        return dummy.next;
+        return head;
     }
 }
