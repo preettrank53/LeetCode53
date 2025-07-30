@@ -1,35 +1,44 @@
 class Solution {
+    List<Integer> list1 = new ArrayList<>();
+    List<Integer> list2 = new ArrayList<>();
 
-    void helper(TreeNode root , List<Integer> list) {
-        if (root == null) {
+    void helper1(TreeNode node) {
+        if(node == null) {
             return;
         }
 
-        helper(root.left , list);
-        helper(root.right , list);
+        if(node.left != null) {
+            helper1(node.left);
+        }
+        if(node.right != null) {
+            helper1(node.right);
+        }
 
-        if (root.left == null && root.right == null) {
-            list.add(root.val);
+        if(node.left == null && node.right == null) {
+            list1.add(node.val);
+        }
+    }
+    void helper2(TreeNode node) {
+        if(node == null) {
+            return;
+        }
+
+        if(node.left != null) {
+            helper2(node.left);
+        }
+        if(node.right != null) {
+            helper2(node.right);
+        }
+
+        if(node.left == null && node.right == null) {
+            list2.add(node.val);
         }
     }
 
     public boolean leafSimilar(TreeNode root1, TreeNode root2) {
-        List<Integer> list1 = new ArrayList<>();
-        List<Integer> list2 = new ArrayList<>();
+        helper1(root1);
+        helper2(root2);
 
-        helper(root1 , list1);
-        helper(root2 , list2);
-
-        if (list1.size() != list2.size()) {
-            return false;
-        }
-
-        for (int i = 0; i < list1.size(); i++) {
-            if (!list1.get(i).equals(list2.get(i))) {
-                return false;
-            }
-        }
-
-        return true;
+        return list1.equals(list2);
     }
 }
