@@ -1,34 +1,33 @@
 class Solution {
 
-    void helper(TreeNode root , StringBuilder str) {
-        if (root == null) return;
-
-        if (root.left == null && root.right == null) {
-            return; // No need to add anything, already handled in caller
+    void helper(TreeNode node , StringBuilder sb) {
+        if(node == null) {
+            return;
         }
 
-        if (root.left != null) {
-            str.append('(');
-            str.append(root.left.val);
-            helper(root.left, str);
-            str.append(')');
-        } else if (root.right != null) {
-            // Left is null but right exists → need empty ()
-            str.append("()");
+        if(node.left == null && node.right == null) {
+            return;
         }
 
-        if (root.right != null) {
-            str.append('(');
-            str.append(root.right.val);
-            helper(root.right, str);
-            str.append(')');
+        sb.append('(');
+        if(node.left != null) {
+            sb.append(node.left.val);
+            helper(node.left , sb);
+        }
+        sb.append(')');
+        
+        if(node.right != null) {
+            sb.append('(');
+            sb.append(node.right.val);
+            helper(node.right , sb);
+            sb.append(')');
         }
     }
 
     public String tree2str(TreeNode root) {
-        StringBuilder str = new StringBuilder();
-        str.append(root.val);
-        helper(root, str);
-        return str.toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append(root.val);
+        helper(root , sb);
+        return sb.toString();
     }
 }
