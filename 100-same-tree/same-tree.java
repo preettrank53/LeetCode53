@@ -1,30 +1,30 @@
 class Solution {
 
-    void sameTree(TreeNode root , List<String> list) {
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.add(root);
-
-        while(!queue.isEmpty()) {
-            TreeNode node = queue.poll();
-
-            if (node == null) {
-                list.add("null");
-                continue;
-            }
-
-            list.add(String.valueOf(node.val));
-            queue.add(node.left);
-            queue.add(node.right);
+    void helper(TreeNode node , List<Integer> list) {
+        if(node == null) {
+            list.add(-1);
+            return;
         }
+
+        helper(node.left , list);
+        list.add(node.val);
+        helper(node.right , list);
+        list.add(node.val);
+    
     }
 
     public boolean isSameTree(TreeNode p, TreeNode q) {
-        List<String> list1 = new ArrayList<>();
-        List<String> list2 = new ArrayList<>();
-
-        sameTree(p , list1);
-        sameTree(q , list2);
-
+        List<Integer> list1 = new ArrayList<>();
+        if(p != null) {
+            list1.add(p.val);
+            helper(p , list1);
+        }
+        List<Integer> list2 = new ArrayList<>();
+        if(q != null) {
+            list2.add(q.val);
+            helper(q , list2);
+        }
+        
         return list1.equals(list2);
     }
 }
