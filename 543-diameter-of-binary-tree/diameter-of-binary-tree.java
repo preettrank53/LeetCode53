@@ -1,36 +1,21 @@
 class Solution {
 
-    public class pair {
-        int dia;
-        int ht;
+    int maxDia = 0;
 
-        pair(int dia , int ht) {
-            this.dia = dia;
-            this.ht = ht;
-        }
-
-    }
-
-    public pair helper(TreeNode node) {
+    int helper(TreeNode node) {
         if(node == null) {
-            return new pair(-1,-1);
+            return 0;
         }
 
-        pair myAns = new pair(-1,-1);
+        int leftHight = helper(node.left);
+        int rightHight = helper(node.right);
 
-        pair leftNode = helper(node.left);
-        pair rightNode = helper(node.right);
+        maxDia = Math.max(leftHight + rightHight , maxDia); 
 
-        int mydia = leftNode.ht + rightNode.ht + 2;
-
-        myAns.dia = Math.max(Math.max(leftNode.dia , rightNode.dia) , mydia);
-        myAns.ht = Math.max(leftNode.ht , rightNode.ht) + 1;
-
-        return myAns;
-
+        return Math.max(leftHight , rightHight) + 1;
     }
-
     public int diameterOfBinaryTree(TreeNode root) {
-        return helper(root).dia;
+        helper(root);
+        return maxDia;
     }
 }
