@@ -1,18 +1,34 @@
 class Solution {
-    public boolean hasPathSum(TreeNode root, int targetSum) {
-        if (root == null) {
+
+    int sum = 0;
+
+    boolean helper(TreeNode node , int target) {
+        if(node == null) {
             return false;
         }
 
-        // If it's a leaf node, check if the current value completes the sum
-        if (root.left == null && root.right == null) {
-            return root.val == targetSum;     // why root.val==targetSum because last node is 
+        sum = sum + node.val;
+
+        if((node.left == null && node.right == null ) && sum == target) {
+            return true;
+        }
+        boolean x = false;
+        boolean y = false;
+
+        if(node.left != null) {
+            x = helper(node.left , target);
         }
 
-        // Recur on left and right children with updated sum
-        boolean left = hasPathSum(root.left, targetSum - root.val);
-        boolean right = hasPathSum(root.right, targetSum - root.val);
+        if(node.right != null) {
+            y = helper(node.right , target);
+        }
+        
+            sum = sum - node.val;
 
-        return left || right;
+        return x || y;
+    }
+
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        return helper(root , targetSum);
     }
 }
