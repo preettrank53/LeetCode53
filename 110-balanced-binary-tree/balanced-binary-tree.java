@@ -1,37 +1,39 @@
 class Solution {
-    
-    public class pair{
-        boolean retVal;
-        int maxHt;
 
-        pair(boolean retVal , int maxHt) {
-            this.retVal = retVal;
-            this.maxHt = maxHt;
+    int height(TreeNode root) {
+        if (root == null) {
+            return 0;
         }
+
+        int x = height(root.left);
+        int y = height(root.right);
+
+        return Math.max(x, y) + 1;
     }
 
-    public pair helper(TreeNode node) {
-        if(node == null) {
-            return new pair(true , 0);
+    boolean helper(TreeNode node) {
+        if (node == null) {
+            return true;
         }
 
-        pair myAns = new pair(false , -1);
+        boolean left = helper(node.left);
+        boolean right = helper(node.right);
 
-        pair leftSide = helper(node.left);
-        pair rightSide = helper(node.right);
+        int x = height(node.left);
+        int y = height(node.right);
 
-        myAns.maxHt = Math.max(leftSide.maxHt , rightSide.maxHt) + 1;
-        if (!leftSide.retVal || !rightSide.retVal || Math.abs(leftSide.maxHt - rightSide.maxHt) > 1) {
-            myAns.retVal = false;
-        } else {
-            myAns.retVal = true;
+        if (left!=true || right!=true) {
+            return false;
         }
 
-        return myAns;
+        if (Math.abs(x - y) > 1) {
+            return false;
+        }
+
+        return true;
     }
-     
 
     public boolean isBalanced(TreeNode root) {
-        return helper(root).retVal;
+        return helper(root);
     }
 }
