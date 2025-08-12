@@ -1,38 +1,20 @@
 class Solution {
+    public int findBottomLeftValue(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
 
-    int helper(TreeNode node) {
-        if(node == null) {
-            return -1;
-        }
+        queue.offer(root);
+        TreeNode node = new TreeNode();
 
-        int left = height(node.left);
-        int right = height(node.right);
-
-
-        if(left >= right) {
-            if(node.left != null)
-            return helper(node.left);
-        }
-        else {
-            if(node.right != null)
-            return helper(node.right);
+        while(!queue.isEmpty()) {
+            node = queue.poll();
+            if(node.right != null) {
+                queue.offer(node.right);
+            }
+            if(node.left != null) {
+                queue.offer(node.left);
+            }
         }
 
         return node.val;
-    }
-
-    int height(TreeNode node) {
-        if(node == null) {
-            return 0;
-        }
-
-        int left = height(node.left); 
-        int right = height(node.right); 
-
-        return Math.max(left , right) + 1;
-    }
-
-    public int findBottomLeftValue(TreeNode root) {
-        return helper(root);
     }
 }
