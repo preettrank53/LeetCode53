@@ -1,24 +1,19 @@
 class Solution {
-    int[] memo;
-
-    int helper(int n) {
-        if (n < 0) {
-            return 0;
-        }
-        if (n == 0) {
-            return 1;
-        }
-        if (memo[n] != -1) {
-            return memo[n];
-        }
-
-        memo[n] = helper(n - 1) + helper(n - 2);
-        return memo[n];
-    }
-
     public int climbStairs(int n) {
-        memo = new int[n + 1];
-        Arrays.fill(memo, -1);
-        return helper(n);
+        if(n==0 || n == 1 || n==2 || n==3) {
+            return n;
+        }
+
+        int[] dp = new int[n+1];
+        dp[0] = 0;
+        dp[1] = 1;
+        dp[2] = 2;
+        dp[3] = 3;
+
+        for(int i = 4 ; i<=n ; i++) {
+            dp[i] = dp[i-1] + dp[i-2];
+        }
+
+        return dp[n];
     }
 }
