@@ -23,6 +23,6 @@ class Solution {
         for (int i = 2; i < len; i++) {
             dp[i] = Math.max(nums[start + i] + dp[i - 2], dp[i - 1]);
         }
-        return dp[len - 1];
+        return Math.max(dp[len-2] , dp[len - 1]);
     }
 }
