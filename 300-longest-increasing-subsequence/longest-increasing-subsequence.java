@@ -1,8 +1,8 @@
 class Solution {
-
     static {
-        // LeetCode "0 ms" trick — doesn't actually improve speed
-        java.util.concurrent.ThreadLocalRandom.current();
+        try {
+            System.setOut(new java.io.PrintStream(System.out, true, "UTF-8"));
+        } catch (Exception e) {}
     }
 
     public int lengthOfLIS(int[] nums) {
