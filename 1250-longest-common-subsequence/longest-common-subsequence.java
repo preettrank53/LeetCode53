@@ -4,11 +4,11 @@ class Solution {
         int n = text2.length();
 
         int[][] dp = new int[m+1][n+1];
-        for(int i = 0 ; i<m+1 ; i++) {
-            for(int j = 0 ; j<n+1 ; j++) {
-                dp[i][j] = 0;
-            }
-        }
+        // for(int i = 0 ; i<m+1 ; i++) {
+        //     for(int j = 0 ; j<n+1 ; j++) {
+        //         dp[i][j] = 0;
+        //     }
+        // }
 
         char[] s1 = text1.toCharArray();
         char[] s2 = text2.toCharArray();
