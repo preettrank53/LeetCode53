@@ -1,28 +1,34 @@
 class Solution {
-
-    Boolean[][] memo;
-
-    boolean helper(int[] nums , int sum1 , int sum2 , int i) {
-        if (i < 0) {
-            return sum1 == sum2;
-        }
-
-        if (memo[i][sum1] != null) {
-            return memo[i][sum1];
-        }
-
-        boolean notTake = helper(nums , sum1 + nums[i] , sum2 , i - 1);
-        boolean take = helper(nums , sum1 , sum2 + nums[i] , i - 1);
-
-        return memo[i][sum1] = (notTake || take);
-    }
-
     public boolean canPartition(int[] nums) {
         int n = nums.length;
-        int total = 0;
-        for (int num : nums) total += num;
+        int sum = 0;
+        for(int i = 0 ; i<n ; i++) {
+            sum = sum + nums[i];
+        }
+        if(sum % 2 != 0) {
+            return false;
+        }
+        int target = sum/2;
+        boolean[][] dp = new boolean[n][target+1];
 
-        memo = new Boolean[n][total + 1]; 
-        return helper(nums , 0 , 0 , n - 1);
+        for(int i = 0 ; i<n ; i++) {
+            dp[i][0] = true;
+        }
+        if(nums[0] <= target) {
+            dp[0][nums[0]] = true;
+        }
+
+        for(int i = 1 ; i<n ; i++) {
+            for(int j = 1 ; j<=target ; j++) {
+                boolean notTake = dp[i-1][j];
+                boolean take = false;
+                if(nums[i] <= j) {
+                    take = dp[i-1][j-nums[i]];
+                }
+
+                dp[i][j] = notTake || take;
+            }
+        }
+        return dp[n-1][target];
     }
 }
