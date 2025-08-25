@@ -14,7 +14,7 @@ class Solution {
         for(int i = 0 ; i<n ; i++) {
             dp[i][0] = true;
         }
-        if(nums[0] <= target) {
+        if(nums[0] >= 0 && nums[0] <= target) {
             dp[0][nums[0]] = true;
         }
 
