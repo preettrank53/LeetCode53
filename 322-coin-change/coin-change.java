@@ -1,28 +1,38 @@
 class Solution {
-    public int coinChange(int[] coins, int amount) {
-        int[] t = new int[amount + 1];
-        int n = coins.length;
-
-        // Initialize all values with a large number (representing infinity)
-        for (int i = 0; i <= amount; i++) {
-            t[i] = amount + 1;
+    int[][] memo;
+    int helper(int[] coins , int amount , int i) {
+        if (amount == 0) return 0;
+        if(i == 0) {
+            if(amount % coins[0] == 0) {
+                return amount/coins[0];
+            }
+            return (int)1e9;
         }
 
-        t[0] = 0; // Base case: 0 coins to make amount 0
+        if(memo[i][amount] != -1) {
+            return memo[i][amount];
+        }
 
-        for (int i = 1; i <= amount; i++) {
-            for (int j = 0; j < n; j++) {
-                int coin = coins[j];
-                if (coin <= i) {
-                    t[i] = Math.min(t[i], t[i - coin] + 1);
-                }
+        int notTake = helper(coins , amount , i-1);
+        int take = (int)1e9;
+        if(coins[i] <= amount) {
+            take = 1 + helper(coins , amount - coins[i] , i);
+        }
+
+        return memo[i][amount] = Math.min(notTake , take);
+    }
+
+    public int coinChange(int[] coins, int amount) {
+        int n = coins.length;
+        memo = new int[n][amount+1];
+
+        for(int i = 0 ; i<n ; i++) {
+            for(int j = 0 ; j<amount+1 ; j++) {
+                memo[i][j] = -1;
             }
         }
 
-        if (t[amount] > amount) {
-            return -1;
-        } else {
-            return t[amount];
-        }
+        int ans =  helper(coins , amount , n-1 );
+        return (ans >= (int)1e9) ? -1 : ans;
     }
 }
