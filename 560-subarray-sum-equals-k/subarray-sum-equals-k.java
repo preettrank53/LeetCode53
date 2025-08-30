@@ -1,26 +1,28 @@
+import java.util.*;
+
 class Solution {
     public int subarraySum(int[] nums, int k) {
         int n = nums.length;
-        int[] arr = new int[n+1];  // prefix sum
-        arr[0] = 0;
+        Map<Integer, Integer> freq = new HashMap<>();
+        
+        freq.put(0, 1);
+        int sum = 0;
+        int count = 0;
 
-        for (int i = 1; i <= n; i++) {
-            arr[i] = arr[i-1] + nums[i-1];
-        }
+        for (int i = 0; i < n; i++) {
+            sum += nums[i];
 
-        int[] ans = new int[n+1];
-        ans[0] = 0;
+            if (freq.containsKey(sum - k)) {
+                count += freq.get(sum - k);
+            }
 
-        for (int i = 1; i <= n; i++) {
-            ans[i] = ans[i-1];
-
-            for (int j = 0; j < i; j++) {
-                if (arr[i] - arr[j] == k) {
-                    ans[i]++;  
-                }
+            if (freq.containsKey(sum)) {
+                freq.put(sum, freq.get(sum) + 1);
+            } else {
+                freq.put(sum, 1);
             }
         }
 
-        return ans[n];
+        return count;
     }
 }
