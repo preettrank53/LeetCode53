@@ -1,30 +1,25 @@
 class Solution {
     public int numSubarraysWithSum(int[] nums, int goal) {
-        Map<Integer, Integer> map = new HashMap<>();
-        int sum = 0;
-        int count = 0;
+        return atMost(nums, goal) - atMost(nums, goal - 1);
+    }
 
-        // Base case: prefix sum 0 has occurred once
-        map.put(0, 1);
+    private int atMost(int[] nums, int k) {
+        if (k < 0) return 0;
+        int n = nums.length;
+        int i = 0, sum = 0, count = 0;
 
-        for (int i = 0; i < nums.length; i++) {
-            sum += nums[i];
+        for (int j = 0; j < n; j++) {
+            sum += nums[j];
 
-            // Check if there is a prefix sum that leads to a subarray with sum = goal
-            if (map.containsKey(sum - goal)) {
-                count += map.get(sum - goal);
+            while (sum > k) {
+                sum -= nums[i];
+                i++;
             }
 
-            // Store/update the frequency of the current prefix sum
-            if (map.containsKey(sum)) {
-                int x = map.get(sum);
-                x++;
-                map.put(sum, x);
-            } else {
-                map.put(sum, 1);
-            }
+            count += (j - i + 1);
+
+            
         }
-
         return count;
     }
 }
