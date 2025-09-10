@@ -1,59 +1,42 @@
 class Solution {
-
-    boolean allZero(Map<Character, Integer> map) {
-        for (int val : map.values()) {
-            if (val != 0) return false;
-        }
-        return true;
-    }
-
     public List<Integer> findAnagrams(String s, String p) {
-        List<Integer> ans = new ArrayList<>();
-
-        int n = s.length();
-        int m = p.length();
-
-        char[] arr = s.toCharArray();
-
+        List<Integer> list = new ArrayList<>();
         Map<Character , Integer> map = new HashMap<>();
 
-        for(int i = 0 ; i<m ; i++) {
-            if(map.containsKey(p.charAt(i))) {
-                int x = map.get(p.charAt(i));
-                x++;
-                map.put(p.charAt(i) , x);
-            }
-            else {
-                map.put(p.charAt(i) , 1);
-            } 
+        for (int i = 0; i < p.length(); i++) {
+            char ch = p.charAt(i);
+            map.put(ch, map.getOrDefault(ch, 0) + 1);
         }
 
-        int i = 0 ;
-        int j = 0 ; 
-        int count = 0;
+        int i = 0, j = 0;
+        int n = s.length();
+        int count = map.size(); 
 
-        while(j<n) {
-            if(map.containsKey(arr[j])) {
-                int x = map.get(arr[j]);
-                x--;
-                map.put(arr[j] , x);
+        while (j < n) {
+            char ch = s.charAt(j);
+            if (map.containsKey(ch)) {
+                map.put(ch, map.get(ch) - 1);
+                if (map.get(ch) == 0) {
+                    count--;
+                }
             }
 
-            if(j-i+1==m) {
-                if(allZero(map)) {
-                    ans.add(i);
+            if (j - i + 1 > p.length()) {
+                char left = s.charAt(i);
+                if (map.containsKey(left)) {
+                    if (map.get(left) == 0) count++; 
+                    map.put(left, map.get(left) + 1);
                 }
-
-                if(map.containsKey(arr[i])) {
-                    int x = map.get(arr[i]);
-                    x++;
-                    map.put(arr[i] , x);
-                }
-                
                 i++;
             }
+
+            if (count == 0 && j - i + 1 == p.length()) {
+                list.add(i);
+            }
+
             j++;
         }
-        return ans;
+
+        return list;
     }
 }
