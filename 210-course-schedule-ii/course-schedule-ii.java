@@ -1,74 +1,68 @@
 class Solution {
+
+    List<Integer> result = new ArrayList<>();
     int count = 0;
-    void useBFS(Map<Integer , List<Integer>> adj , int V , List<Integer> result ) {
-        Queue<Integer> queue = new LinkedList<>();
-        int[] inDegree = new int[V];
-        
-        //step 1 
-        
-        for(int i = 0 ;i<V ;i++) {
-            List<Integer> near = adj.getOrDefault(i , new ArrayList<>());
-            for(int j = 0 ; j<near.size() ;j++) {
-                int node = near.get(j);
-                inDegree[node]++;
-            }
-        }
-        
-        // fill queue , indegree 0 fill in queue first
-        for(int i = 0 ; i< V ; i++) {
-            if(inDegree[i]==0) {
-                queue.add(i);
-                result.add(i);
-                count++;
-            }
-        }
-        
-        //Simple BFS
+
+    void bfs(Map<Integer , List<Integer>> map , int[] inNode , Queue<Integer> queue , int V) {
         while(!queue.isEmpty()) {
-            int u = queue.poll();
-            List<Integer> near = adj.getOrDefault(u , new ArrayList<>());
-            for(int i = 0 ; i< near.size() ; i++) {
-                int node = near.get(i);
-                inDegree[node]--;
-                
-                if(inDegree[node]==0) {
-                    queue.add(node);
-                    result.add(node);
-                    count++;
+            int node = queue.poll();
+            result.add(node);
+            count++;
+            
+            for(int nbr : map.getOrDefault(node , new ArrayList<>())) {
+                inNode[nbr]--;
+                if(inNode[nbr] == 0) {
+                    queue.offer(nbr);
                 }
             }
         }
-        
     }
 
-    public int[] findOrder(int V, int[][] edges) {
 
-        List<Integer> result = new ArrayList<>();
+    public int[] findOrder(int numCourses, int[][] arr) {
+        int n = arr.length;
+         if (n == 0) {
+            int[] result = new int[numCourses];
+            for (int i = 0; i < numCourses; i++) {
+                result[i] = numCourses - 1 - i; 
+            }
+            return result;
+        }
 
         Map<Integer , List<Integer>> map = new HashMap<>();
-        
-        for (int i = 0; i < edges.length; i++) {
-            int u = edges[i][1];
-            int v = edges[i][0];
 
-            // Ensure u is in the graph
-            if (!map.containsKey(u)) {
-                map.put(u, new ArrayList<>());
+        for(int i = 0 ; i<n ; i++) {
+            int u = arr[i][1];
+            int v = arr[i][0];
+
+            if(!map.containsKey(u)) {
+                map.put(u , new ArrayList<>());
             }
             map.get(u).add(v);
-
-            // Ensure v is in the graph
-            if (!map.containsKey(v)) {
-                map.put(v, new ArrayList<>());
-            }
-            
         }
-        
-        useBFS(map , V , result);
-        if(count!=V) {
+
+        int[] inNode = new int[numCourses];
+
+        for(int i = 0 ; i<inNode.length ; i++) {
+            for(int nbr : map.getOrDefault(i , new ArrayList<>())) {
+                inNode[nbr]++;
+            }
+        }
+
+        Queue<Integer> queue = new LinkedList<>();
+
+        for(int i = 0 ; i<inNode.length ; i++) {
+            if(inNode[i] == 0) {
+                queue.offer(i);
+            }
+        }
+
+        bfs(map , inNode , queue , numCourses);
+
+        if(count < numCourses) {
             return new int[]{};
         }
-        int[] ans = new int[V];
+        int[] ans = new int[numCourses];
         for(int i = 0 ; i<result.size() ; i++) {
             ans[i] = result.get(i);
         }
