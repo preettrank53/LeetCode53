@@ -1,26 +1,23 @@
 class Solution {
     public int singleNumber(int[] nums) {
-        int result = 0 ;
+        int n = nums.length;
 
-        for (int k = 0 ; k<32 ; k++) {
-            int temp = 1<<k;
+        Map<Integer , Integer> map = new HashMap<>();
 
-            int countZeros = 0;
-            int countOnes = 0;
-
-            for(int num : nums) {
-                if((num & temp)==0) {
-                    countZeros++;
-                }
-                else {
-                    countOnes++;
-                }
+        for(int i = 0 ; i<n ; i++ ) {
+            if(map.containsKey(nums[i])) {
+                map.put(nums[i] , map.get(nums[i]) + 1 );
             }
-
-            if(countOnes % 2 == 1) {
-                result = (result | temp ) ;
+            else {
+                map.put(nums[i] , 1);
             }
         }
-        return result;
+
+        for(int key : map.keySet()) {
+            if(map.get(key) == 1) {
+                return key;
+            }
+        }
+        return nums[0];
     }
 }
