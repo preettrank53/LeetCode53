@@ -1,61 +1,50 @@
 class Solution {
 
-    void BFS(Map<Integer , List<Integer>> adj , Set<Integer> visited , int u) {
-        if(visited.contains(u)) {
-            return;
+    int findParent(int x, int[] parent) {
+        if (parent[x] == x) return x;  
+        return parent[x] = findParent(parent[x], parent); 
+    }
+
+    void union(int x, int y, int[] parent, int[] rank) {
+        int px = findParent(x, parent);
+        int py = findParent(y, parent);
+
+        if (px == py) return; 
+
+        if (rank[px] > rank[py]) {
+            parent[py] = px;
+        } else if (rank[px] < rank[py]) {
+            parent[px] = py;
+        } else {
+            parent[py] = px;
+            rank[px]++;
+        }
+    }
+
+    public int findCircleNum(int[][] isConnected) {
+        int n = isConnected.length;
+
+        int[] parent = new int[n];
+        int[] rank = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+            rank[i] = 0;
         }
 
-        Queue<Integer> queue = new LinkedList<>();
-        queue.add(u);
-        visited.add(u);
-
-        while(!queue.isEmpty()) {
-            int node = queue.poll();
-
-            List<Integer> near = adj.getOrDefault(node , new ArrayList<>());
-
-            for(int i = 0 ; i<near.size() ; i++) {
-                int v = near.get(i);
-                if(!visited.contains(v)) {
-                    visited.add(v);
-                    queue.add(v);
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (isConnected[i][j] == 1) {
+                    union(i, j, parent, rank);
                 }
             }
         }
 
-    }
-
-    int useBFS(Map<Integer , List<Integer>> adj , int V) {
-        Set<Integer> visited = new HashSet<>();
         int count = 0;
-        for(int i = 0 ; i < V ; i++) {
-            if(!visited.contains(i)) {
-                BFS(adj , visited , i);
-                count++;
-            }
+        for (int i = 0; i < n; i++) {
+            if (parent[i] == i) count++;
         }
+
         return count;
-    }
-
-    public int findCircleNum(int[][] edges) {
-        Map<Integer , List<Integer>> map = new HashMap<>();
-        
-        for(int i = 0 ; i<edges.length ; i++) {
-            for(int j = 0 ; j<edges.length ; j++) {
-                if(edges[i][j]==1 && i!=j) {
-                    if(!map.containsKey(i)) {
-                        map.put(i , new ArrayList<>());
-                    }
-                    map.get(i).add(j);
-
-                    if(!map.containsKey(j)) {
-                        map.put(j , new ArrayList<>());
-                    }
-                    map.get(j).add(i);
-                }
-            }
-        }
-
-        return useBFS(map , edges.length);
     }
 }
