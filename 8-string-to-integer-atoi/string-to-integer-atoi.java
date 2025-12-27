@@ -1,62 +1,43 @@
 class Solution {
 
-    boolean isDigit(char ch) {
-        return ch >= '0' && ch <= '9';
+    int helper(String s, int i, int num, int sign) {
+        int n = s.length();
+
+        // base case
+        if (i == n || !Character.isDigit(s.charAt(i))) {
+            return num * sign;
+        }
+
+        int digit = s.charAt(i) - '0';
+
+        // overflow check (important, not optional)
+        if (num > Integer.MAX_VALUE / 10 ||
+           (num == Integer.MAX_VALUE / 10 && digit > 7)) {
+            return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+        }
+
+        return helper(s, i + 1, num * 10 + digit, sign);
     }
 
     public int myAtoi(String s) {
         int n = s.length();
+        int i = 0;
 
-        int num = 0 ;
+        while (i < n && s.charAt(i) == ' ') {
+            i++;
+        }
+
         int sign = 1;
-        int i = 0 ;
 
-        // 1. Whitespace
-        while(i < n && s.charAt(i) == ' ') {
-            i = i + 1;
-        }
-
-        // 2 . Signedness
-        if(i < n) {
-            if(s.charAt(i) == '-') {
-                i = i + 1;
+        if (i < n) {
+            if (s.charAt(i) == '-') {
                 sign = -1;
-            }
-            else if(s.charAt(i) == '+') {
-                i = i + 1;
+                i++;
+            } else if (s.charAt(i) == '+') {
+                i++;
             }
         }
 
-        // 3 . Conversion
-        while(i < n && isDigit(s.charAt(i))) {
-            int digit = s.charAt(i) - '0';
-
-            // 4.Rounding
-            if(num == Integer.MAX_VALUE / 10) {
-                if(sign == 1) {
-                    if(digit >= 7) {
-                        return Integer.MAX_VALUE;
-                    }
-                }
-                else {
-                    if(digit >= 8) {
-                        return Integer.MIN_VALUE;
-                    }
-                }
-            }
-
-            if(num > Integer.MAX_VALUE / 10) {
-                if(sign == 1) {
-                    return Integer.MAX_VALUE;
-                }
-                else {
-                    return Integer.MIN_VALUE;
-                }
-            }
-            num = num * 10 + digit;
-            i = i + 1;
-        }
-
-        return num * sign;
+        return helper(s, i, 0, sign);
     }
 }
