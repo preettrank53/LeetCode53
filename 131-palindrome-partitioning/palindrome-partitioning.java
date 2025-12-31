@@ -1,41 +1,35 @@
 class Solution {
 
-    boolean isPalindrome(String s , int start , int end) {
-        while(start<end) {
-            if(s.charAt(start)!=s.charAt(end)) {
-                return false;
-            }
-            start++;
-            end--;
+    boolean isPalindrome(String s) {
+        int l = 0, r = s.length() - 1;
+        while (l < r) {
+            if (s.charAt(l++) != s.charAt(r--)) return false;
         }
         return true;
     }
 
-    void helper(List<List<String>> res , List<String> combi , int parIndex , String s ) {
+    void helper(String s, List<List<String>> list, List<String> ans, int n) {
 
-        //base case
-        if(parIndex==s.length()){
-            res.add(new ArrayList<>(combi));
+        if (n == s.length()) {
+            list.add(new ArrayList<>(ans));
             return;
         }
 
-        for(int i = parIndex ; i<s.length() ; i++) {
-            if(isPalindrome(s , parIndex , i)) {
-                combi.add(s.substring(parIndex , i+1));
+        String str = "";
+        for (int i = n; i < s.length(); i++) {
+            str += s.charAt(i);
 
-                helper(res , combi , i+1 , s);
-
-                //backtrack
-                combi.remove(combi.size()-1);
+            if (isPalindrome(str)) {
+                ans.add(str);
+                helper(s, list, ans, i + 1);
+                ans.remove(ans.size() - 1);
             }
         }
     }
 
     public List<List<String>> partition(String s) {
-        List<List<String>> res = new ArrayList<>();
-        List<String> combi = new ArrayList<>();
-
-        helper(res , combi , 0 , s);
-        return res;
+        List<List<String>> list = new ArrayList<>();
+        helper(s, list, new ArrayList<>(), 0);
+        return list;
     }
 }
