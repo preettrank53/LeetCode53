@@ -1,57 +1,47 @@
 class Solution {
 
-    boolean dfs(char[][] board , int r , int c , String word , int wordIndex) {
-        //base case
-        if(wordIndex==word.length()){
+    boolean helper(char[][] board , String word , int i , int j , int n) {
+        if(n == word.length()) {
             return true;
-        }    
+        }
 
-        // out of bound case 
         int rows = board.length;
         int cols = board[0].length;
 
-        if(r<0 || r>=rows || c<0 || c>=cols) {
+        if(i < 0 || i>= rows || j<0 || j>=cols) {
             return false;
         }
 
-        // invalide case
-        if(board[r][c]=='$' || board[r][c]!=word.charAt(wordIndex)) {
+        if(board[i][j] == '$' || board[i][j] != word.charAt(n)) {
             return false;
         }
 
-        char ch = board[r][c];
-        board[r][c]='$'; 
+        char temp = board[i][j];
+        board[i][j] = '$';
 
-        // dfs calls 
-        if(dfs(board ,r-1 , c , word , wordIndex+1) ||
-           dfs(board ,r , c+1 , word , wordIndex+1) ||
-           dfs(board ,r+1 , c , word , wordIndex+1) ||
-           dfs(board ,r , c-1 , word , wordIndex+1)  ) {
+        if(helper(board , word , i-1 , j , n+1) ||
+           helper(board , word , i+1 , j , n+1) ||
+           helper(board , word , i , j-1 , n+1) ||
+           helper(board , word , i , j+1 , n+1) ) {
             return true;
         }
 
-        // backtraking
-        board[r][c]=ch;
+        board[i][j] = temp;
         return false;
-
-
     }
-
 
     public boolean exist(char[][] board, String word) {
         int n = board.length;
         int m = board[0].length;
 
         for(int i = 0 ; i<n ; i++) {
-            for(int j = 0 ;j<m ; j++) {
-                if(word.charAt(0)==board[i][j]) {
-                    boolean found = dfs(board,i,j,word,0);
-                    if(found) {
+            for(int j = 0 ; j<m ; j++) {
+                if(word.charAt(0) == board[i][j]) {
+                    if(helper(board , word , i , j , 0)) {
                         return true;
                     }
                 }
             }
-
         }
         return false;
     }
